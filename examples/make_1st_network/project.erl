@@ -6,10 +6,10 @@
 makeNet(N, BootServerPid) -> makeNet(N, BootServerPid, [], 0).
 
 makeNet(N, BootServerPid, Net, Counter) ->
-  NodePid = spawn(node, listen, [BootServerPid, {-1, [], 3, 0}]),
+  NodePid = spawn(node, listen, {}),
   spawn(node, isItTime, [2999, NodePid]),
   NodeId = node:join(BootServerPid),
-  NodePid ! {info, {id=NodeId, view=[], c=3, h=1500},  %Definir H de manière intelligente.
+  NodePid ! {info, {NodeId, BootServerPid}},  %Definir H de manière intelligente.
   Node = { NodeId, NodePid },
   if
     N =/= Counter + 1 ->
